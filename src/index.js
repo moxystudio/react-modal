@@ -82,15 +82,11 @@ export class Modal extends Component {
     }
 
     open = () => {
-        const { onOpen } = this.props;
-
-        this.setState({ isOpen: true }, onOpen);
+        this.setState({ isOpen: true });
     };
 
     close = () => {
-        const { onClose } = this.props;
-
-        this.setState({ isOpen: false }, onClose);
+        this.setState({ isOpen: false });
     };
 
     handleOnRequestClose = this.close;
@@ -98,8 +94,6 @@ export class Modal extends Component {
 
 Modal.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-    onOpen: PropTypes.func,
-    onClose: PropTypes.func,
     onRequestClose: PropTypes.func,
 };
 
