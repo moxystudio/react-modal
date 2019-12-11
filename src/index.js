@@ -11,8 +11,10 @@ export const setAppElement = (selector) => {
 };
 
 export class Modal extends Component {
+    prevStyleValues = {};
+
     state = {
-        isOpen: false,
+        isOpen: this.props.isOpen,
     };
 
     componentDidMount() {
@@ -20,8 +22,13 @@ export class Modal extends Component {
     }
 
     getSnapshotBeforeUpdate(prevProps, prevState) {
-        const { isOpen: wasOpen } = prevState;
-        const { isOpen } = this.state;
+        const { isOpen: wasOpenFromProps } = prevProps;
+        const { isOpen: wasOpenFromState } = prevState;
+        const { isOpen: isOpenFromProps } = this.props;
+        const { isOpen: isOpenFromState } = this.state;
+
+        const wasOpen = typeof wasOpenFromProps === 'undefined' ? wasOpenFromState : wasOpenFromProps;
+        const isOpen = typeof isOpenFromProps === 'undefined' ? isOpenFromState : isOpenFromProps;
 
         if (!wasOpen && isOpen) {
             this.previousScrollValue = window.scrollY;
@@ -50,11 +57,18 @@ export class Modal extends Component {
                 position: this.prevStyleValues.position,
             };
         }
+
+        return null;
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const { isOpen: wasOpen } = prevState;
-        const { isOpen } = this.state;
+        const { isOpen: wasOpenFromProps } = prevProps;
+        const { isOpen: wasOpenFromState } = prevState;
+        const { isOpen: isOpenFromProps } = this.props;
+        const { isOpen: isOpenFromState } = this.state;
+
+        const wasOpen = typeof wasOpenFromProps === 'undefined' ? wasOpenFromState : wasOpenFromProps;
+        const isOpen = typeof isOpenFromProps === 'undefined' ? isOpenFromState : isOpenFromProps;
 
         if (wasOpen !== isOpen) {
             this.rootElement.style.top = snapshot.top;
@@ -63,19 +77,21 @@ export class Modal extends Component {
             this.rootElement.style.position = snapshot.position;
         }
 
-        if (wasOpen && !isOpen) {
+        if (wasOpen && !isOpen && typeof this.previousScrollValue !== 'undefined') {
             window.scroll(0, this.previousScrollValue);
         }
     }
 
     render() {
-        const { children, ...props } = this.props;
-        const { isOpen } = this.state;
+        const { children, isOpen: isOpenFromProps, ...props } = this.props;
+        const { isOpen: isOpenFromState } = this.state;
+
+        const isOpen = typeof isOpenFromProps === 'undefined' ? isOpenFromState : isOpenFromProps;
 
         return (
             <ReactModal isOpen={ isOpen } onRequestClose={ this.handleOnRequestClose } { ...props }>
                 { typeof children === 'function' ?
-                    children({ isOpen, close: this.close, open: this.open }) :
+                    children({ isOpen, open: this.open, close: this.close }) :
                     children }
             </ReactModal>
         );
@@ -94,6 +110,7 @@ export class Modal extends Component {
 
 Modal.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+    isOpen: PropTypes.bool,
     onRequestClose: PropTypes.func,
 };
 

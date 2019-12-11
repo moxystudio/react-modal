@@ -14,7 +14,7 @@
 [david-dm-dev-url]:https://david-dm.org/moxystudio/react-modal?type=dev
 [david-dm-dev-image]:https://img.shields.io/david/dev/moxystudio/react-modal.svg
 
-A self controlled modal built on top of [react-modal](https://github.com/reactjs/react-modal) that also fixes the scrollable body in iOS.
+A modal, built on top of [react-modal](https://github.com/reactjs/react-modal), that also fixes the scrollable body in iOS.
 
 ## Installation
 
@@ -35,7 +35,7 @@ import Modal from '@moxy/react-modal';
 Modal.setAppElement('#yourAppElement');
 ```
 
-...and then use the Modal as the example:
+### Self controlled
 
 ```js
 import React, { useRef, useCallback } from 'react';
@@ -59,6 +59,36 @@ const MyComponent = () => {
 export default MyComponent;
 ```
 
+### Uncontrolled
+
+In this case, you have to close the modal when `onRequestClose` is called.
+
+```js
+import React, { useState, useCallback } from 'react';
+import Modal from '@moxy/react-modal';
+
+const MyComponent = () => {
+    const [isOpen, setOpen] = useState(false);
+
+    const handleModalOpen = useCallback(() => {
+        setOpen(true);
+    }, []);
+
+    const handleModalClose = useCallback(() => {
+        setOpen(false);
+    }, []);
+
+    return (
+        <>
+            <button onClick={ handleModalOpen }>Open</button>
+            <Modal onRequestClose={ handleModalClose }>Modal content</Modal>
+        </>
+    );
+};
+
+export default MyComponent;
+```
+
 ## API
 
 ### setAppElement
@@ -67,7 +97,8 @@ Wrapper around [react-modal](https://github.com/reactjs/react-modal)'s `setAppEl
 
 ### Modal
 
-React component that already has a state that controls if the modal is open or not. Can be opened by passing a ref and calling its methods `open` or `close`. Every prop passed to `Modal` will be passed to the base component.
+React component that can be used as controlled or uncontrolled (check usage).
+Every prop passed to `Modal` will be passed to the base component.
 
 ## Tests
 

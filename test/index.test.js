@@ -3,7 +3,13 @@ import { render, fireEvent } from '@testing-library/react';
 
 import { Modal, setAppElement } from '../src';
 
-const Tree = (props) => {
+beforeAll(() => {
+    document.documentElement.innerHTML = '<div id="app" style="position: static; top: auto; left: auto; right: auto" />';
+
+    setAppElement('#app');
+});
+
+const ControlledTree = (props) => {
     const modalRef = useRef();
 
     const [isOpen, setOpen] = useState(false);
@@ -26,30 +32,50 @@ const Tree = (props) => {
     );
 };
 
-beforeAll(() => {
-    document.documentElement.innerHTML = '<div id="app" style="position: static; top: auto; left: auto; right: auto" />';
+describe('Controlled', () => {
+    it('should render its content when open', () => {
+        const { queryByText, getByRole } = render(<ControlledTree>Hello world</ControlledTree>);
 
-    setAppElement('#app');
+        expect(queryByText('Hello world')).not.toBeTruthy();
+
+        fireEvent.click(getByRole('button'));
+
+        expect(queryByText('Hello world')).toBeTruthy();
+    });
+
+    it('should render nothing after is closed and scroll to the latest position', () => {
+        global.window.scroll = jest.fn();
+        const { queryByText, getByRole } = render(<ControlledTree>Hello world</ControlledTree>);
+
+        fireEvent.click(getByRole('button'));
+        fireEvent.click(getByRole('button'));
+
+        expect(queryByText('Hello world')).not.toBeTruthy();
+        expect(global.window.scroll).toHaveBeenCalledTimes(1);
+        expect(global.window.scroll).toHaveBeenCalledWith(0, 0);
+    });
 });
 
-it('should render its content when open', () => {
-    const { queryByText, getByRole } = render(<Tree>Hello world</Tree>);
+describe('Uncontrolled', () => {
+    it('should render its content when open and not render after closed', () => {
+        const { queryByText, rerender } = render(<Modal isOpen>Hello world</Modal>);
 
-    expect(queryByText('Hello world')).not.toBeTruthy();
+        expect(queryByText('Hello world')).toBeTruthy();
 
-    fireEvent.click(getByRole('button'));
+        rerender(<Modal isOpen={ false }>Hello world</Modal>);
 
-    expect(queryByText('Hello world')).toBeTruthy();
+        expect(queryByText('Hello world')).not.toBeTruthy();
+    });
 });
 
-it('should render nothing after is closed and scroll to the latest position', () => {
-    global.window.scroll = jest.fn();
-    const { queryByText, getByRole } = render(<Tree>Hello world</Tree>);
+it('should pass its children functions to open, close and its state', () => {
+    const mockChild = jest.fn(() => 'Hello world');
 
-    fireEvent.click(getByRole('button'));
-    fireEvent.click(getByRole('button'));
+    render(<Modal isOpen>{ mockChild }</Modal>);
 
-    expect(queryByText('Hello world')).not.toBeTruthy();
-    expect(global.window.scroll).toHaveBeenCalledTimes(1);
-    expect(global.window.scroll).toHaveBeenCalledWith(0, 0);
+    expect(mockChild).toHaveBeenCalledWith({
+        isOpen: expect.any(Boolean),
+        open: expect.any(Function),
+        close: expect.any(Function),
+    });
 });
