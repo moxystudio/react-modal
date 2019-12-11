@@ -51,7 +51,7 @@ const MyComponent = () => {
     return (
         <>
             <button onClick={ handleModalOpen }>Open</button>
-            <Modal>This is the modal's content</Modal>
+            <Modal>Modal content</Modal>
         </>
     );
 };
