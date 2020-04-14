@@ -13,11 +13,11 @@ beforeAll(() => {
 it('should render its content when open and not render after closed', () => {
     const { queryByText, rerender } = render(<Modal isOpen>Hello World</Modal>);
 
-    expect(queryByText('Hello World')).toBeTruthy();
+    expect(queryByText('Hello World')).toBeInTheDocument();
 
     rerender(<Modal isOpen={ false }>Hello World</Modal>);
 
-    expect(queryByText('Hello World')).not.toBeTruthy();
+    expect(queryByText('Hello World')).not.toBeInTheDocument();
 });
 
 it('should apply fixed styles to the app element when opened', () => {
@@ -59,9 +59,9 @@ it('should scroll the window to its original position after closing', () => {
 it('should render correctly if receives different props than those that it uses', () => {
     const { queryByText, rerender } = render(<Modal isOpen>Hello World</Modal>);
 
-    expect(queryByText('Hello World')).toBeTruthy();
+    expect(queryByText('Hello World')).toBeInTheDocument();
 
     rerender(<Modal isOpen shouldCloseOnOverlayClick={ false }>Hello World</Modal>);
 
-    expect(queryByText('Hello World')).toBeTruthy();
+    expect(queryByText('Hello World')).toBeInTheDocument();
 });

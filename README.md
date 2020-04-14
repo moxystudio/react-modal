@@ -66,11 +66,11 @@ export default MyComponent;
 
 ### setAppElement
 
-Wrapper around [`react-modal`](https://github.com/reactjs/react-modal)'s `setAppElement` that not only binds the modal to the app element aswell as saves it to lock the scroll when a modal is open.
+Wrapper around [`react-modal`](https://github.com/reactjs/react-modal)'s `setAppElement` that binds the modal to the app element and locks the scroll on that element when a modal is open.
 
 ### Modal
 
-React component that locks the app element whenever modal is open.
+React component that locks the app element whenever a modal is open.
 Every prop passed to `Modal` will be passed to the base component ([`react-modal`](https://github.com/reactjs/react-modal)).
 
 ## Tests

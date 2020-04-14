@@ -11,6 +11,8 @@ export const setAppElement = (selector) => {
 };
 
 export class Modal extends Component {
+    rootElement = null;
+    previousScrollValue = null;
     prevStyleValues = {};
 
     componentDidMount() {
@@ -60,19 +62,13 @@ export class Modal extends Component {
             this.rootElement.style.position = snapshot.position;
         }
 
-        if (wasOpen && !isOpen && typeof this.previousScrollValue !== 'undefined') {
+        if (wasOpen && !isOpen && this.previousScrollValue !== null) {
             window.scroll(0, this.previousScrollValue);
         }
     }
 
     render() {
-        const { children, ...props } = this.props;
-
-        return (
-            <ReactModal { ...props }>
-                { children }
-            </ReactModal>
-        );
+        return <ReactModal { ...this.props } />;
     }
 
     computeElementValues() {
@@ -95,7 +91,6 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
     isOpen: PropTypes.bool,
 };
 
