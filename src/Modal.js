@@ -21,7 +21,7 @@ export class Modal extends Component {
         this.rootElement = document.querySelector(rootSelector);
 
         if (isOpen) {
-            const newStyleValues = this.computeElementValues();
+            const newStyleValues = this.calculateElementStyles();
 
             this.updateRootElement(newStyleValues);
         }
@@ -32,7 +32,7 @@ export class Modal extends Component {
         const { isOpen } = this.props;
 
         if (!wasOpen && isOpen) {
-            return this.computeElementValues();
+            return this.calculateElementStyles();
         }
 
         if (wasOpen && !isOpen) {
@@ -59,7 +59,7 @@ export class Modal extends Component {
         return <ReactModal { ...this.props } />;
     }
 
-    computeElementValues() {
+    calculateElementStyles() {
         this.previousScrollValue = window.scrollY;
         this.prevStyleValues = {
             top: this.rootElement.style.top,
