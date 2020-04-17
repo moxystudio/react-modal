@@ -23,10 +23,7 @@ export class Modal extends Component {
         if (isOpen) {
             const newStyleValues = this.computeElementValues();
 
-            this.rootElement.style.top = newStyleValues.top;
-            this.rootElement.style.left = newStyleValues.left;
-            this.rootElement.style.right = newStyleValues.right;
-            this.rootElement.style.position = newStyleValues.position;
+            this.updateRootElement(newStyleValues);
         }
     }
 
@@ -43,7 +40,6 @@ export class Modal extends Component {
                 top: this.prevStyleValues.top,
                 left: this.prevStyleValues.left,
                 right: this.prevStyleValues.right,
-                bottom: this.prevStyleValues.bottom,
                 position: this.prevStyleValues.position,
             };
         }
@@ -56,10 +52,7 @@ export class Modal extends Component {
         const { isOpen } = this.props;
 
         if (wasOpen !== isOpen) {
-            this.rootElement.style.top = snapshot.top;
-            this.rootElement.style.left = snapshot.left;
-            this.rootElement.style.right = snapshot.right;
-            this.rootElement.style.position = snapshot.position;
+            this.updateRootElement(snapshot);
         }
 
         if (wasOpen && !isOpen && this.previousScrollValue !== null) {
@@ -77,7 +70,6 @@ export class Modal extends Component {
             top: this.rootElement.style.top,
             left: this.rootElement.style.left,
             right: this.rootElement.style.right,
-            bottom: this.rootElement.style.bottom,
             position: this.rootElement.style.position,
         };
 
@@ -87,6 +79,13 @@ export class Modal extends Component {
             right: 0,
             position: 'fixed',
         };
+    }
+
+    updateRootElement({ top, left, right, position }) {
+        this.rootElement.style.top = top;
+        this.rootElement.style.left = left;
+        this.rootElement.style.right = right;
+        this.rootElement.style.position = position;
     }
 }
 
