@@ -36,12 +36,7 @@ export class Modal extends Component {
         }
 
         if (wasOpen && !isOpen) {
-            return {
-                top: this.prevStyleValues.top,
-                left: this.prevStyleValues.left,
-                right: this.prevStyleValues.right,
-                position: this.prevStyleValues.position,
-            };
+            return this.prevStyleValues;
         }
 
         return null;
