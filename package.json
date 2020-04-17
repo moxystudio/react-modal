@@ -1,6 +1,6 @@
 {
   "name": "@moxy/react-modal",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A modal, built on top of react-modal, that also fixes the scrollable body in iOS",
   "main": "lib/index.js",
   "module": "es/index.js",
