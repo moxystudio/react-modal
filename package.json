@@ -1,0 +1,67 @@
+{
+  "name": "@moxy/react-modal",
+  "version": "0.0.0",
+  "description": "A modal, built on top of react-modal, that also fixes the scrollable body in iOS",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "lib",
+    "es",
+    "dist"
+  ],
+  "homepage": "https://github.com/moxystudio/react-modal#readme",
+  "author": {
+    "name": "Ivo Lima Silva",
+    "email": "ivolimasilva@outlook.com",
+    "url": "https://ivolimasilva.xyz"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "modal",
+    "dialog"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moxystudio/react-modal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moxystudio/react-modal/issues"
+  },
+  "scripts": {
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib --delete-dir-on-start",
+    "build:es": "cross-env BABEL_ENV=es babel src -d es --delete-dir-on-start",
+    "build": "npm run build:commonjs && npm run build:es",
+    "test": "jest",
+    "lint": "eslint --ignore-path .gitignore .",
+    "prerelease": "npm t && npm run lint && npm run build",
+    "release": "standard-version",
+    "postrelease": "git push --follow-tags origin HEAD && npm publish"
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react-modal": "^3.11.2"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@moxy/babel-preset": "^3.2.5",
+    "@moxy/eslint-config": "^9.1.2",
+    "@moxy/jest-config": "^1.4.1",
+    "@testing-library/react": "^9.5.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "husky": "^3.1.0",
+    "jest": "^25.3.0",
+    "lint-staged": "^9.5.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "standard-version": "^7.1.0"
+  }
+}
