@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Modal, { setAppElement } from './Modal';
+import Modal, { setAppElement } from '../src/Modal';
 
 beforeAll(() => {
     document.documentElement.innerHTML = '<div id="app" data-testid="app" />';
